@@ -9,7 +9,7 @@ if __name__ == '__main__':
     file_name = r'd:\Shagane\FirstProject\oscarwilde.txt'
     # f = open(file_name)
     read_file = open(file_name).read()
-    all_words = re.findall(r'[A-Za-z]+-?[\']?[a-z]+', read_file)
+    all_words = re.findall(r'[A-Za-z\-\']+', read_file)
     words_quantity = len(all_words)
     print('1 METHOD: There are', words_quantity, 'words in the text')
 
