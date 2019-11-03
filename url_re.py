@@ -8,12 +8,12 @@ filehandle = request.urlopen(some_url)
 
 html_code = filehandle.read()
 
-links_pattern = "<a.*</a>"
+links_pattern = "<a.*?</a>"
 
-links = re.findall(links_pattern, html_code)
+links = re.findall(links_pattern, str(html_code))
 
-for iiii in links:
-	try:
-		print (iiii.decode('utf8'))
-	except:
-		print (iiii)
+# for iiii in links:
+# 	print (iiii)
+
+import sys
+print("😊😊😊😊")

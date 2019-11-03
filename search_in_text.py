@@ -14,6 +14,8 @@ if __name__ == '__main__':
     all_words2 = re.findall(r'[A-Za-z\-\']+', open(file_name).read())
     print(all_words2)
 
+    all_words3 = re.findall(r'[A-Za-z\-\']+', str(open(file_name)))
+
     words_quantity = len(all_words)
     print('1 METHOD: There are', words_quantity, 'words in the text')
 
