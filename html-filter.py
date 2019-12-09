@@ -43,7 +43,7 @@ class DataBase():
                         '''.format(self.name))
         return cursor
         
-    def push_item(self):     
+    def push_item(self):
         for i in range(len(self.articul)):
             self.__class__.create_db(self).execute("""INSERT INTO {} VALUES
                         (?, ?, ?, ?, ?)
