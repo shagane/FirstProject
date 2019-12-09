@@ -13,11 +13,6 @@ def get_data():
 #     item_list = soup.find()
 #     return item_list is not None
 
-# def read_file(file_name):
-#     with open(file_name) as input_file:
-#         text = input_file.read()
-#     return text
-
 def parse_items_intext(text):
     patterns = [r'"articul":"\w*"', r'"brand":"[^"]+"', r'"pn":"[^"]+"', r'"p_price":"\d+.00"', r'"p_original_price":"\d+.00"']
     items = []
@@ -50,7 +45,6 @@ class DataBase():
                         (?, ?, ?, ?, ?)
                         """.format(self.name), (self.articul, self.brand, self.prod_name, self.price, self.original_price))
                 
-
 def main():
     html_text = get_data()
     items = parse_items_intext(html_text)
