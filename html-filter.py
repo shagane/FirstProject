@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 import re
 
 def get_data():
-    url = r'https://iledebeaute.ru/shop/make-up/tint/'
+    url = u'https://iledebeaute.ru/shop/make-up/tint/'
     r = requests.get(url)
-    return r.text
+    return r.text.encode("utf-8").decode('unicode_escape')
 
 # def contain_items(text):
 #     soup = BeautifulSoup(text)
@@ -14,11 +14,14 @@ def get_data():
 #     return item_list is not None
 
 def parse_items_intext(text):
-    patterns = [r'"articul":"\w*"', r'"brand":"[^"]+"', r'"pn":"[^"]+"', r'"p_price":"\d+.00"', r'"p_original_price":"\d+.00"']
+    patterns = [r'\"articul\":\"(\w*)\"', 
+                r'\"brand\":\"([^"]+)\"', 
+                r'\"pn\":\"(.*?)\"', 
+                r'\"p_price\":\"(\d+.00)\"', 
+                r'\"p_original_price\":\"(\d+.00)\"']
     items = []
     for pattern in patterns:
         item = re.findall(pattern, text)
-        item = re.sub(r'("\w+":")'r'([^"]+)'r'(")', r'\2', str(item))
         items.append(item)
     return items
 
@@ -41,17 +44,19 @@ class DataBase():
         return cursor
         
     def push_item(self):     
-        self.__class__.create_db(self).execute("""INSERT INTO {} VALUES
+        for i in range(len(self.articul)):
+            self.__class__.create_db(self).execute("""INSERT INTO {} VALUES
                         (?, ?, ?, ?, ?)
-                        """.format(self.name), (self.articul, self.brand, self.prod_name, self.price, self.original_price))
+                        """.format(self.name), (self.articul[i], self.brand[i], self.prod_name[i], self.price[i], self.original_price[i]))
                 
 def main():
     html_text = get_data()
     items = parse_items_intext(html_text)
-    articul, brand, prod_name, price, original_price = [x for x in items]
+    articul, brand, prod_name, price, original_price = items
     db_name = 'Makeup_items'
     make_up_db = DataBase(db_name, articul, brand, prod_name, price, original_price)
     make_up_db.push_item()
+
 
         
 if __name__ == "__main__":
