@@ -13,44 +13,39 @@ def parse_items_intext(text):
     items = re.findall(patterns, text)
     return items
 
-def conn(db_name):
+
+def create_db(db_name, items):
     conn = sqlite3.connect('{}.db'.format(db_name))
-    return conn
-
-def create_db(conn, db_name):
     cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS {}
-                    (Articul text PRIMARY KEY, 
-                    Brand text,
-                    Product_name text, 
-                    Price text, 
-                    Original_price text)
-                    '''.format(db_name))
-    conn.commit
-    cursor.lastrowid
-    return conn
-   
-def insert_items(conn, db_name, items):
-    for i in range(len(items)):
-        conn.cursor().execute("""INSERT INTO {} VALUES
+    cursor.execute('''CREATE TABLE IF NOT EXISTS Make_up_items
+                    (Articul ntext PRIMARY KEY NOT NULL, 
+                    Brand ntext NOT NULL,
+                    Product_name ntext NOT NULL, 
+                    Price ntext NOT NULL, 
+                    Original_price ntext NOT NULL)
+                    ''')
+    
+    for item in items:
+        cursor.execute('''INSERT INTO Make_up_items VALUES
                     (?, ?, ?, ?, ?)
-                    """.format(db_name), items[i])
-        conn.commit
+                    ''', item)
+    
+    conn.commit
+    conn.close()      
     return conn
 
-def select_query(conn, db_name, atr):
-    select_query = """SELECT * FROM {} WHERE Articul=?""".format(db_name)
-    conn.cursor().execute(select_query, atr)
-    select = conn.cursor().fetchall
-    return select
+# def select_query(conn, db_name, atr):
+#     select_query = """SELECT * FROM {} WHERE Brand=?""".format(db_name)
+#     conn.cursor().execute(select_query, atr)
+#     return conn.cursor().fetchone()
         
 def main():
     html_text = get_data()
     items = parse_items_intext(html_text)
     db_name = 'Makeup_items'
-    db_connection = conn(db_name)
-    dbcreated = create_db(db_connection, db_name)
-    insert_items(dbcreated, db_name, items)
+    return create_db(db_name, items)
+   
+    
    
 
         
