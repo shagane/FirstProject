@@ -17,34 +17,38 @@ def parse_items_intext(text):
 def create_db(db_name, items):
     conn = sqlite3.connect('{}.db'.format(db_name))
     cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS Make_up_items
+    cursor.execute('''CREATE TABLE IF NOT EXISTS {}
                     (Articul ntext PRIMARY KEY NOT NULL, 
                     Brand ntext NOT NULL,
                     Product_name ntext NOT NULL, 
                     Price ntext NOT NULL, 
                     Original_price ntext NOT NULL)
-                    ''')
+                    '''.format(db_name))
     
     for item in items:
-        cursor.execute('''INSERT INTO Make_up_items VALUES
+        cursor.execute('''INSERT INTO {} VALUES
                     (?, ?, ?, ?, ?)
-                    ''', item)
+                    '''.format(db_name), item)
     
-    conn.commit
-    conn.close()      
+    conn.commit()
+         
     return conn
 
-# def select_query(conn, db_name, atr):
-#     select_query = """SELECT * FROM {} WHERE Brand=?""".format(db_name)
-#     conn.cursor().execute(select_query, atr)
-#     return conn.cursor().fetchone()
+def select_query(conn, db_name, atr):
+    db = conn.cursor()
+    db.execute("""SELECT * FROM {} WHERE Brand=?""".format(db_name), (atr,))
+    return db.fetchall()
         
 def main():
     html_text = get_data()
     items = parse_items_intext(html_text)
     db_name = 'Makeup_items'
-    return create_db(db_name, items)
-   
+    db = create_db(db_name, items)
+    art = 'Dior'
+    s = select_query(db, db_name, art)
+    
+
+    # create_db.close() 
     
    
 
