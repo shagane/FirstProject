@@ -14,7 +14,7 @@ def parse_items_intext(text):
     return items
 
 
-def create_db(db_name, items):
+def create_db(db_name):
     conn = sqlite3.connect('{}.db'.format(db_name))
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS {}
@@ -24,14 +24,15 @@ def create_db(db_name, items):
                     Price ntext NOT NULL, 
                     Original_price ntext NOT NULL)
                     '''.format(db_name))
+    return conn
     
+def insert_values(conn, db_name, items):
+    cursor = conn.cursor()
     for item in items:
         cursor.execute('''INSERT INTO {} VALUES
                     (?, ?, ?, ?, ?)
                     '''.format(db_name), item)
-    
-    conn.commit()
-         
+    conn.commit()  
     return conn
 
 def select_query(conn, db_name, atr):
@@ -43,7 +44,8 @@ def main():
     html_text = get_data()
     items = parse_items_intext(html_text)
     db_name = 'Makeup_items'
-    db = create_db(db_name, items)
+    db = create_db(db_name)
+    db = insert_values(db, db_name, items)
     art = 'Dior'
     s = select_query(db, db_name, art)
     
