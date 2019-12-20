@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Тоналки</title>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE-edge"/>
+		<meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='style.css') }}" >
+
+	</head>
+
+	<body> 
+		<div id="wrap">
+			<div id="header">
+			<h2>Интернет магазин SHAHANE</h2>
+			<p>Тональные средства</p>
+			</div>
+			<div id="content">
+				<ul id="tovar">
+				{% for item in all_items %}
+				<li>
+				<!-- <img src="images/<?=$item['img'];?>"> -->
+				<p id="brand"> {{item.Brand}} </p>
+				<p id="title"> {{item.Product_name}} </p>
+				<p id="price"> {{item.Price}} руб.</p>
+				</li>
+				{% endfor %}
+				</ul>
+			</div>
+			
+		<footer class="footer">
+			<p>&copy;SHAHANE Company 2019</p>
+		</footer>
+
+		</div>
+	</body>
+</html>

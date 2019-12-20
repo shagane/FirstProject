@@ -3,13 +3,13 @@ import sqlite3
 from bs4 import BeautifulSoup
 import re
 
-def get_data():
-    url = u'https://iledebeaute.ru/shop/make-up/tint/'
+def get_data(i):
+    url = u'https://iledebeaute.ru/shop/make-up/tint/page{}/?perpage=72'.format(i)
     r = requests.get(url)
     return r.text.encode('utf-8').decode('raw-unicode-escape')
 
 def parse_items_intext(text):
-    patterns = r'''\"articul\":\"(\w*)\",\"brand\":\"([^"]+)\",\"pn\":\"(.*?)\",\"p_price\":\"(\d+.00)\",\"p_original_price\":\"(\d+.00)\"'''
+    patterns = r'''\"articul\":\"(\w*)\",\"brand\":\"([^"]+)\",\"pn\":\"(.*?)\",\"p_price\":\"(\d+).00\",\"p_original_price\":\"(\d+).00\"'''
     items = re.findall(patterns, text)
     return items
 
@@ -21,8 +21,8 @@ def create_db(db_name):
                     (Articul ntext PRIMARY KEY NOT NULL, 
                     Brand ntext NOT NULL,
                     Product_name ntext NOT NULL, 
-                    Price ntext NOT NULL, 
-                    Original_price ntext NOT NULL)
+                    Price integer NOT NULL, 
+                    Original_price integer NOT NULL)
                     '''.format(db_name))
     return conn
     
@@ -41,14 +41,16 @@ def select_query(conn, db_name, atr):
     return db.fetchall()
         
 def main():
-    html_text = get_data()
-    items = parse_items_intext(html_text)
     db_name = 'Makeup_items'
     db = create_db(db_name)
-    db = insert_values(db, db_name, items)
-    art = 'Dior'
-    s = select_query(db, db_name, art)
-    print(s)
+    
+    for i in range(1,6):
+        html_text = get_data(i)
+        items = parse_items_intext(html_text)
+        db = insert_values(db, db_name, items)
+
+    # art = 'Dior'
+    # s = select_query(db, db_name, art)
     # create_db.close()  
        
 if __name__ == "__main__":

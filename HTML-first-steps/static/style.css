@@ -1,0 +1,21 @@
+body{ background: #f7e3e8;}
+
+#wrap{margin:0px auto 0px;padding:10px;border:1px solid #074776;border-radius:10px;
+  -moz-border-radius:10px;width: auto;}
+#header {height:100px;border-bottom:10px solid #af4343;}
+h2 {margin-top:0px; text-align: center;}
+#header p {color: #680721; text-align: center; font-size: large; font-weight: bold;}
+
+footer{height:50px;border-top:10px solid #643159;clear:both; text-align: center; 
+  font-weight: bolder; background-color: #d3a1f0;}
+
+#content {border-right:1px;width:auto;float:left;}
+
+#tovar {margin:0px;padding:0px}
+#tovar li{border:1px solid #074776;border-radius:5px;-moz-border-radius:5px;float:left;
+	width:165px;padding:10px;margin:20px;height:250px;cursor:move;list-style:none;}
+li {list-style:none}
+
+#brand {text-align: center; margin-top:5px; color: #0c0c16; font-size: large; font-weight: bold;}
+#title {text-align:center;margin-top:5px;color:#242c72;font-size:1.2em;font-weight:bold;}
+#price {text-align:center;margin-top:5px;color:#520d10;font-size:1.4em;font-weight:bold;}
