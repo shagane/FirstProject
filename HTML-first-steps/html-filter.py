@@ -3,8 +3,7 @@ import sqlite3
 from bs4 import BeautifulSoup
 import re
 
-def get_data(i):
-    url = u'https://iledebeaute.ru/shop/make-up/tint/page{}/?perpage=72'.format(i)
+def get_data(url):
     r = requests.get(url)
     return r.text.encode('utf-8').decode('raw-unicode-escape')
 
@@ -43,12 +42,11 @@ def select_query(conn, db_name, atr):
 def main():
     db_name = 'Makeup_items'
     db = create_db(db_name)
-    
     for i in range(1,6):
-        html_text = get_data(i)
+        url = u'https://iledebeaute.ru/shop/make-up/tint/page{}/?perpage=72'.format(i)
+        html_text = get_data(url)
         items = parse_items_intext(html_text)
         db = insert_values(db, db_name, items)
-
     # art = 'Dior'
     # s = select_query(db, db_name, art)
     # create_db.close()  
