@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, json, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 
@@ -21,7 +21,9 @@ def main():
 @app.route('/tint')
 def showTints():
     all_items = db.session.query(Makeup_items_class).all()
-    return render_template('tint.html', all_items=all_items)
+    brands = {item.Brand for item in all_items}
+    brands = sorted(brands)
+    return render_template('tint.html', all_items=all_items, brands=brands)
 
 if __name__ == "__main__":
     app.run()

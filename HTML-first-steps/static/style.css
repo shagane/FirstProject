@@ -2,6 +2,24 @@ body{
   background: #f7e3e8;
 }
 
+header{
+  height:100px;
+  border-top: 15px solid #520d10;
+  border-bottom:10px solid #af4343;
+}
+  header > h2 {
+    margin-top:5px;
+    text-align: center;
+  }
+
+  header > p {
+    color: #680721; 
+    text-align: center; 
+    font-size: large; 
+    font-weight: bold;
+  }
+
+
 #wrap{
   margin:0px auto 0px;
   padding:10px;
@@ -10,37 +28,15 @@ body{
   -moz-border-radius:10px;
   width: auto;
 }
-
-#header {
-  height:100px;
-  border-bottom:10px solid #af4343;
+.col-sidebar{
+  width: 20%;
+  float: left;
+  padding: 20px 2.5%;
 }
-
-h2 {
-  margin-top:0px; 
-  text-align: center;
-}
-
-#header p {
-  color: #680721; 
-  text-align: center; 
-  font-size: large; 
-  font-weight: bold;
-}
-
-footer{
-  height:50px;
-  border-top:10px solid #643159;
-  clear:both; 
-  text-align: center; 
-  font-weight: bolder; 
-  background-color: #d3a1f0;
-}
-
-#content {
-  border-right:1px;
-  width:auto;
-  float:left;
+.col-main{
+  width: 75%;
+  float: right;
+  padding: 20px;
 }
 
 #tovar {
@@ -57,7 +53,7 @@ footer{
   padding:10px;
   margin:20px;
   height:250px;
-  cursor:move;
+  cursor: pointer;
   list-style:none;
 }
 
@@ -66,16 +62,24 @@ li {
 }
 
 #brand {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   text-align: center; 
-  margin-top:5px; 
+  margin-top:4px; 
   color: #0c0c16; 
   font-size: large; 
   font-weight: bold;
 }
 
 #title {
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+  word-wrap: break-word;
   text-align:center;
-  margin-top:5px;
+  width: 130px;
+  height: 140px;
   color:#242c72;
   font-size:1.2em;
   font-weight:bold;
@@ -83,8 +87,18 @@ li {
 
 #price {
   text-align:center;
-  margin-top:5px;
+  margin-top:4px;
   color:#520d10;
   font-size:1.4em;
   font-weight:bold;
+  align-self: end;
+}
+
+footer{
+  height:50px;
+  border-top:10px solid #643159;
+  clear:both; 
+  text-align: center; 
+  font-weight: bolder; 
+  background-color: #d3a1f0;
 }
