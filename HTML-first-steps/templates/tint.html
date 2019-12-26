@@ -33,29 +33,33 @@
 			<h3>Все торавы</h3>
 			<p>Сортировать</p>
 			<form class="filter">
-			<label>Производитель</label>
-			{% for brand in brands %}	
-			<li><input type="checkbox" onclick="sort_brands()">{{brand}}<br></li>
-			{% endfor %}	
-
-			<label>Цена</label>
-			<input type="checkbox">sdfjh<br>
-			
+				<label>Производитель</label>
+				{% for brand in brands %}	
+				<li><input id="brandCheck" type="checkbox" onclick="sort_brands()" value="{{brand}}">{{brand}}<br></li>
+				{% endfor %}	
+			<br>
+				<label>Цена</label>
+				<li><input id="priceRange" type="checkbox" onclick="sort_price()" name="0-1000">До 1000 руб.<br></li>
+				<li><input id="priceRange" type="checkbox" onclick="sort_price()" name="1000-3000">От 1000 до 3000 руб.<br></li>
+				<li><input id="priceRange" type="checkbox" onclick="sort_price()" name="3000-5000">От 3000 до 5000 руб.<br></li>
+				<li><input id="priceRange" type="checkbox" onclick="sort_price()" name="5000+">Свыше 5000 руб.<br></li>		
 			</form>
 
 		</aside>
 
 		<section class="col-main">
-			<div>
+			<div id="sorted">
 				<ul id="tovar">
-					{% for item in all_items %}
-					<li>
-						<!-- <img src="images/<?=$item['img'];?>"> -->
-						<p id="brand"> {{item.Brand}} </p>
-						<p id="title"> {{item.Product_name}} </p>
-						<p id="price"> {{item.Price}} руб.</p>
-					</li>
-					{% endfor %}
+					{% block content %}
+						{% for item in all_items %}
+						<li>
+							<!-- <img src="images/<?=$item['img'];?>"> -->
+							<p id="brand"> {{item.Brand}} </p>
+							<p id="title"> {{item.Product_name}} </p>
+							<p id="price"> {{item.Price}} руб.</p>
+						</li>
+						{% endfor %}
+					{% endblock %}
 				</ul>
 			</div>
 		</section>
@@ -70,12 +74,35 @@
 </html>
 
 {% block sorted %}
-<script>
+<script type='text/javascript'>
+	var getBrandValues = document.getElementById('brandCheck');
+	
 	function sort_brands() {
-
-
+		var xHttp = new XMLHttpRequest();
+		xHttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById('sorted').innerHTML = this.responseText
+			}
+		}
+		document.getElementById("sorted").innerHTML = "SENDING REQUEST";
+		xHttp.open("POST", "tint_sorted", true);
+		xHttp.setRequestHeader("Content-type", "application/json");
+		xHttp.send('{"a":1,"b":2}');
 	}
 
 
+	// 	requestHttp.open("GET", "ajax_info.json", true);
+	// 	requestHttp.onload = function() {
+    // 		var ourData = JSON.parse(requestHttp.responseText);
+	// 		renderHTML(ourData)
+	// 	};
+	// 	requestHttp.send();
+	// }	
+
+	// function renderHTML(data) {
+	// 	var htmlString = "test"
+	// 	getBrandValues.insertAdjacentHTML('beforeend', htmlString)
+		
+	
 </script>
-{% endblock%}
+{% endblock %}
