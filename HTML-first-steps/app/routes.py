@@ -2,7 +2,8 @@ from flask import Flask, render_template, json, jsonify, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 
-app = Flask(__name__)
+from app import app
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///d:\\Shagane\\Makeup_items.db'
 db = SQLAlchemy(app)
 
@@ -12,7 +13,7 @@ db = SQLAlchemy(app)
 
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
-Makeup_items_class = Base.classes.Makeup_items
+mydb = Base.classes.Makeup_items
 
 @app.route("/")
 def main():
@@ -20,24 +21,33 @@ def main():
 
 @app.route('/tint')
 def showTints():
-    all_items = db.session.query(Makeup_items_class).all()
+    all_items = db.session.query(mydb).all()
     brands = {item.Brand for item in all_items}
     brands = sorted(brands)
+    print("hahaha")
     return render_template('tint.html', all_items=all_items, brands=brands)
 
 @app.route('/tint_sorted', methods=["POST"])
 def sorted_by_brand():
+    all_items = db.session.query(mydb).all()
     try:
         json_data = request.get_json()
-        retuslt = json_data['a'] + json_data['b']
-        return jsonify(result=retuslt)
     except Exception as e:
         return jsonify(result="bad data")
+    
+    items_sorted = []
+    for brand in json_data:
+        items_sorted.extend(db.session.query(mydb).filter(mydb.Brand == brand).all())
+
+    def make_norm_dict(inDct):
+        dct = {}
+        dct["Brand"] = inDct.Brand
+        dct["Price"] = inDct.Price
+        dct["Product_name"] = inDct.Product_name
+        return dct
+
+    return jsonify(list(map(make_norm_dict, items_sorted)))
 
 # @app.route('/tint_sorted')
 # def sorted_by_brand(brands):
 #     return render_template('tint_sorted.html', all_items=all_items)
-
-
-if __name__ == "__main__":
-    app.run()
