@@ -11,18 +11,42 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
 	<script type='text/javascript'>
-		function sort_brands() {
+		function button() {
+			document.querySelectorAll('.accordion__button').forEach(button => {
+				button.addEventListener('click', () => {
+					const accordionContent = button.nextElementSibling;
+
+					button.classList.toggle('accordion__button--active');
+
+					if (button.classList.contains('accordion__button--active')) {
+						accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';				
+					} else {
+						accordionContent.style.maxHeight = 0;
+					}
+				});
+			});
+		}
+
+		function sort() {
 	
-			var getBrandValues = document.getElementsByClassName('brandCheck');
-			var i;
-			brandselected = [];
-			for (i=0; i<getBrandValues.length; i++) {
-				if (getBrandValues[i].checked){
-					brandselected.push(getBrandValues[i].value)
+			function getCheckedValues(classname)
+			{
+				var getValues = document.getElementsByClassName(classname);
+				var i;
+				checkedvalues = [];
+				for (i=0; i<getValues.length; i++) {
+					if (getValues[i].checked){
+						checkedvalues.push(getValues[i].value)
+					}
 				}
+				return checkedvalues;
 			}
-	
+			
+			brandselected = getCheckedValues('brandCheck');
+			pricerange = getCheckedValues('priceRange');
+						
 			console.log(brandselected);
+			console.log(pricerange);
 							
 			var xHttp = new XMLHttpRequest();
 			xHttp.onreadystatechange = function() {
@@ -33,7 +57,8 @@
 			document.getElementById("sorted").innerHTML = "SENDING REQUEST";
 			xHttp.open("POST", "tint_sorted", true);
 			xHttp.setRequestHeader("Content-type", "application/json");
-			xHttp.send(JSON.stringify(brandselected));
+			xHttp.send(JSON.stringify({brandselected, pricerange}));
+				
 		}
 	
 		function onReponseCorrect(inData)
@@ -51,6 +76,10 @@
 			}
 	
 		}
+
+		document.addEventListener('DOMContentLoaded', function(){ // Аналог $(document).ready(function(){
+				button();
+			});
 		</script>
 </head->
 
@@ -74,19 +103,23 @@
 		<aside class="col-sidebar">
 			<h3>Все торавы</h3>
 			<p>Сортировать</p>
-			<form class="filter">
-				<label>Производитель</label>
-				{% for brand in brands %}	
-				<li><input class="brandCheck" type="checkbox" onclick="sort_brands()" value="{{brand}}">{{brand}}<br></li>
-				{% endfor %}	
-			<br>
-				<label>Цена</label>
-				<li><input class="priceRange" type="checkbox" onclick="sort_price()" value = '1' name="0-1000">До 1000 руб.<br></li>
-				<li><input class="priceRange" type="checkbox" onclick="sort_price()" value = '2' name="1000-3000">От 1000 до 3000 руб.<br></li>
-				<li><input class="priceRange" type="checkbox" onclick="sort_price()" value = '3' name="3000-5000">От 3000 до 5000 руб.<br></li>
-				<li><input class="priceRange" type="checkbox" onclick="sort_price()" value = '4' name="5000+">Свыше 5000 руб.<br></li>		
+			<form class="accordion">
+				<button type="button" class="accordion__button">Производитель</button>
+				<div class="accordion__content">
+					{% for brand in brands %}	
+					<li><input class="brandCheck" type="checkbox" onchange="sort()" value="{{brand}}"> {{brand}}<br></li class="list-group-item">
+					{% endfor %}	
+					<br>
+				</div>
+				<button type="button" class="accordion__button">Цена</button>
+				<div class="accordion__content">
+					<li><input class="priceRange" type="checkbox" onclick="sort()" value = '1' name="0-1000"> До 1000 руб.<br></li>
+					<li><input class="priceRange" type="checkbox" onclick="sort()" value = '2' name="1000-3000"> От 1000 до 3000 руб.<br></li>
+					<li><input class="priceRange" type="checkbox" onclick="sort()" value = '3' name="3000-5000"> От 3000 до 5000 руб.<br></li>
+					<li><input class="priceRange" type="checkbox" onclick="sort()" value = '4' name="5000+"> Свыше 5000 руб.<br></li>		
+				</div>
 			</form>
-
+			
 		</aside>
 
 		{% block content %}

@@ -24,7 +24,6 @@ def showTints():
     all_items = db.session.query(mydb).all()
     brands = {item.Brand for item in all_items}
     brands = sorted(brands)
-    print("hahaha")
     return render_template('tint.html', all_items=all_items, brands=brands)
 
 @app.route('/tint_sorted', methods=["POST"])
@@ -34,11 +33,18 @@ def sorted_by_brand():
         json_data = request.get_json()
     except Exception as e:
         return jsonify(result="bad data")
-    
-    items_sorted = []
-    for brand in json_data:
-        items_sorted.extend(db.session.query(mydb).filter(mydb.Brand == brand).all())
 
+    print(json_data, type(json_data))
+       
+    items_sorted = []
+    if json_data: 
+        for brand in json_data:
+            items_sorted.extend(db.session.query(mydb).filter(mydb.Brand == brand).all())
+    
+    else:
+        items_sorted = all_items
+
+    
     def make_norm_dict(inDct):
         dct = {}
         dct["Brand"] = inDct.Brand

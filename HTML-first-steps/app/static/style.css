@@ -19,6 +19,39 @@ header{
     font-weight: bold;
   }
 
+aside > p {
+  font-size: medium;
+  font-weight: bolder;
+}
+
+.accordion__button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: #333333;
+  color: #ffffff;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.accordion__button::after {
+  content: '\25be';
+  float: right;
+  transform: scale(2);
+}
+.accordion__button--active { background: #555555;}
+.accordion__button--active::after { content: '\25b4';}
+
+.accordion__content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.2s;
+  padding: 0 5px;
+  font-family: sans-serif;
+}
 
 #wrap{
   margin:0px auto 0px;
@@ -31,7 +64,10 @@ header{
 .col-sidebar{
   width: 20%;
   float: left;
-  padding: 20px 2.5%;
+  padding: inherit;
+  font-family: sans-serif;
+  font-size: medium;
+  font-weight: bolder;
 }
 .col-main{
   width: 75%;
