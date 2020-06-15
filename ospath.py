@@ -1,4 +1,5 @@
 import os
+import sys
 
 filepath = 'd:/Shagane/FirstProject/oscarwilde.txt'
 
