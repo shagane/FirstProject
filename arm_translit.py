@@ -9,9 +9,9 @@ arm_dict3 = {' Ե':' Й', ' ե':' й', '\nԵ' : '\nЙ'}
 
 arm_dict.update(**arm_dict1)
 
-with open(r'd:\Shagane\arm-text.txt', encoding='utf-8') as arm:
+with open(r'arm-text.txt', encoding='utf-8') as arm:
     lines = arm.read()
-rus = open(r'd:\Shagane\rus-text.txt', 'w', encoding='utf-8')
+rus = open(r'rus-text.txt', 'w', encoding='utf-8')
 counter = 0
 
 for i in lines:
